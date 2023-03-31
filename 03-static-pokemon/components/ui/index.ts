@@ -2,4 +2,4 @@
 
 
 export * from '../ui/Navbar'
-export * from '../ui/noFavorites'
+export * from '../ui/NoFavorites'
