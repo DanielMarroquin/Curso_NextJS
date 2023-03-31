@@ -1,8 +1,7 @@
 import { Layout } from '@/components/layouts'
-import NoFavorites from '@/components/ui/noFavorites';
+import NoFavorites from '@/components/ui/NoFavorites';
 import { useEffect, useState } from 'react';
 import { localFavorites } from '@/utils';
-import { Card, Grid } from '@nextui-org/react';
 import { FavoritePokemons } from '@/components/pokemon';
 
 export const FavoritesPage = () => {
