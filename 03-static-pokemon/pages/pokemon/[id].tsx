@@ -120,7 +120,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     paths: limitPokemon.map(id => ({
       params: { id }
     })),
-    fallback: false
+    // fallback: false
+    fallback: 'blocking'
+
   }
 }
 
@@ -129,10 +131,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   
   const { id } = params as { id: string };
 
+  // Funcion para el Static Generation
+  const pokemonId = await getPokemonInfo(id)
+
+  if (!pokemonId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
-      pokemon: await getPokemonInfo(id)
-    }
+      pokemonId
+    },
+    // Cambio para incrementar la regeneracion de los elementos estaticos de mi pagina
+    revalidate: 86400,
   }
 }
 
