@@ -22,10 +22,16 @@ export const UIProvider: FC<UIState> = ({ children }) => {
         dispatch({ type: 'UI - Open Sidebar' })
     }
 
+
+    const closeSideMenu = () => {
+        dispatch({ type: 'UI - Close Sidebar' })
+    }
+
   return (
     <UIContext.Provider value={{
         ...state,
-        openSideMenu
+        openSideMenu,
+        closeSideMenu
     }}>
         { children }
     </UIContext.Provider>
