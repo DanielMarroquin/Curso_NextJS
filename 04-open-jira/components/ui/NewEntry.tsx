@@ -2,12 +2,17 @@ import { Button, Box, TextField } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
+import { EntriesContext } from '@/context/entries/EntriesContext';
+import { UIContext } from '@/context/ui';
 
 export const NewEntry = () => {
 
-    // 
-    const [isAdding, setIsAdding] = useState(false);
+    const { addNewEntry } = useContext(EntriesContext);
+    
+    const { isAddingEntry, setIsAddingEntry } = useContext(UIContext)
+
+    // const [isAdding, setIsAdding] = useState(false);
 
     const [inputValue, setInputValue] = useState('');
 
@@ -17,9 +22,16 @@ export const NewEntry = () => {
         setInputValue(event.target.value)
     }
 
+
     const onSave = () => {
         if ( inputValue.length === 0 ) return
         console.log({ inputValue })
+        // AddNewEntry(inputValue)
+        addNewEntry( inputValue );
+        setIsAddingEntry(false);
+        setTouched( false );
+        setInputValue('');
+
     }
 
 
@@ -27,16 +39,16 @@ export const NewEntry = () => {
     <>
     <Box sx={{ marginBottom: 3, paddingX: 2 }}>
         {
-            isAdding ? (
+            isAddingEntry ? (
                 <>
                     <TextField
                         fullWidth
                         sx={{ marginTop: 2, marginBottom: 1 }}
-                        placeholder='Nueva Tarea'
+                        // placeholder='Describe los pasos a realizar en la tarea.'
                         autoFocus
                         multiline
-                        label='Descripción de Tarea'
-                        helperText={inputValue.length <= 0 && touched && 'Ingrese un valor'}
+                        label='Descripción de la Tarea'
+                        helperText={ inputValue.length <= 0 && touched && 'Es necesario ingresar un valor.' }
                         error={ inputValue.length <= 0 && touched }
                         value={ inputValue }
                         onChange={ onTextFieldChanged }
@@ -47,7 +59,7 @@ export const NewEntry = () => {
                             Guardar
                         </Button>
 
-                        <Button variant='outlined' color='warning' onClick={() => setIsAdding(false)}>
+                        <Button variant='outlined' color='warning' onClick={() => setIsAddingEntry(false)}>
                             Cancelar
                         </Button>
                     </Box>
@@ -59,7 +71,7 @@ export const NewEntry = () => {
                     fullWidth
                     variant='contained'
                     color='secondary'
-                    onClick={() => setIsAdding(true)}
+                    onClick={() => setIsAddingEntry(true)}
                 >
                     Agregar Tarea
                 </Button>

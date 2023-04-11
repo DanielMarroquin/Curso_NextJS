@@ -19,7 +19,7 @@ export const EntryList:FC<Props> = ({ status }) => {
     // TODO: Aqui va el fragmento frop 
     <div>
         <Paper sx={{ 
-            height: 'calc(100vh - 180px)', 
+            height: 'calc(100vh - 800px)', 
             overflow: 'auto', 
             backgroundColor: 'transparent', 
             padding: '1px 7px',
@@ -31,8 +31,10 @@ export const EntryList:FC<Props> = ({ status }) => {
               },
               '&::-webkit-scrollbar-thumb': {
                 background: '#ffff',
-                borderRadius: '0px',
-              }, }}>
+                borderRadius: '50px',
+              },
+            minHeight: '500px', 
+          }}>
             <List sx={{ opacity: 1 }}>
                 {
                   entriesByStatus.map(entry => (

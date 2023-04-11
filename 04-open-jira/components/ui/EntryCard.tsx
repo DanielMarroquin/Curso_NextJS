@@ -9,7 +9,7 @@ interface Props {
 export const EntryCard:FC<Props> = ({ entry }) => {
   return (
     <Card sx={{ marginBottom: 1 }} >
-        <CardActionArea>
+        <CardActionArea sx={{ minHeight: '100px' }}>
             <CardContent>
                 <Typography sx={{ whiteSpace: 'pre-line' }}>{ entry.description }</Typography>
             </CardContent>
