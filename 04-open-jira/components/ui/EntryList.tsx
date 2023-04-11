@@ -8,7 +8,7 @@ export const EntryList = () => {
     // TODO: Aqui va el fragmento frop 
     <div>
         <Paper sx={{ 
-            height: 'calc(100vh - 250px)', 
+            height: 'calc(100vh - 180px)', 
             overflow: 'auto', 
             backgroundColor: 'transparent', 
             padding: '1px 7px',
