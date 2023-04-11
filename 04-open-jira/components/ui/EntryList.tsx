@@ -3,8 +3,6 @@ import React, { FC, useContext, useMemo } from 'react'
 import { EntryCard } from './EntryCard'
 import { EntryStatus } from '@/interfaces'
 import { EntriesContext } from '@/context/entries/EntriesContext'
-import { escape } from 'querystring'
-
 interface Props {
   status: EntryStatus
 }
@@ -14,7 +12,7 @@ export const EntryList:FC<Props> = ({ status }) => {
   
   const { entries } = useContext( EntriesContext );
 
-  const entriesByStatus = useMemo( () => entries.filter(entry => entry.status === status), [entries])
+  const entriesByStatus = useMemo( () => entries.filter(entry => entry.status === status), [entries, status])
   
 
   return (
