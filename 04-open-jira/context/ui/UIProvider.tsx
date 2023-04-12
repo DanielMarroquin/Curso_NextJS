@@ -34,6 +34,14 @@ export const UIProvider: FC<UIState> = ({ children }) => {
     const setIsAddingEntry = ( isAdding: boolean ) => {
         dispatch({ type: 'UI - Set isAddingEntry', payload: isAdding })
     }
+    
+    const startDragging = () => {
+        dispatch({ type: 'UI - Start Dragging' });
+    }
+
+    const endDragging = () => {
+        dispatch({ type: 'UI - End Dragging' });
+    }
 
   return (
     <UIContext.Provider value={{
@@ -41,7 +49,11 @@ export const UIProvider: FC<UIState> = ({ children }) => {
         openSideMenu,
         closeSideMenu,
         
-        setIsAddingEntry
+        setIsAddingEntry,
+
+        startDragging,
+        endDragging
+
     }}>
         { children }
     </UIContext.Provider>
