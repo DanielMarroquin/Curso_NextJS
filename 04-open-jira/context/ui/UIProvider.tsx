@@ -5,6 +5,7 @@ import { uiReducer, UIContext } from './';
 export interface UIState {
     sidemenuOpen: boolean,
     isAddingEntry: boolean,
+    isDragging: boolean,
     children?: any
 
 }
@@ -12,7 +13,8 @@ export interface UIState {
 
 const UI_INITIAL_STATE: UIState = {
     sidemenuOpen: false,
-    isAddingEntry: false
+    isAddingEntry: false,
+    isDragging: false
 }
 
 
