@@ -1,5 +1,7 @@
 # Next.js OpenJira APP
 Para correr localmente, se necesita la base de datos
+
+# Proyecto tiene diferentes enfoques 
 ```
 docker-compose up -d
 
