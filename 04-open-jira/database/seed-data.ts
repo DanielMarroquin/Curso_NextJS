@@ -7,8 +7,8 @@ interface SeedData {
 
 interface SeedEntry {
     description: string,
-    createdAt: string,
-    status: number
+    createdAt: number,
+    status: string
 }
 
 

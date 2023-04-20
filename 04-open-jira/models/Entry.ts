@@ -2,7 +2,7 @@ import mongoose, { Model, Schema } from "mongoose";
 import { Entry } from "@/interfaces";
 
 
-interface IEntry extends Entry {
+export interface IEntry extends Entry {
     //Objento las mismas propiedades del INTERFACE "Entry" 
     // En mi nueva interface, pero si quiero seguir agregando mas propiedades 
     // a este INTERFACE, simplemente la agrego. 
