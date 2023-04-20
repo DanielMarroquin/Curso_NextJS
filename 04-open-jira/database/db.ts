@@ -29,15 +29,15 @@ export const connect = async () => {
     }
 
 
-    await mongoose.connect('....');
+    await mongoose.connect(process.env.MONGO_URL || '');
     mongoConnection.isConnected = 1;
-    console.log('Connected a MongoDB', '....')
+    console.log('Connected a MongoDB', process.env.MONGO_URL)
 }
 
 
 export const disconnect = async () => {
 
-    if ( mongoConnection.isConnected !== 0 ) return;
+    if ( mongoConnection.isConnected === 0 ) return;
 
     await mongoose.disconnect();
     console.log('Disconnected of MongoDB');
