@@ -11,7 +11,7 @@ type Data =
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 
     const { id } = req.query;
-    if ( mongoose.isValidObjectId(id) ) {
+    if ( !mongoose.isValidObjectId(id) ) {
         return res.status(400).json({ message: 'El ID no es valido: ' + id });
     }
 
@@ -34,6 +34,7 @@ const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) =>
     const entryToUpdate = await Entry.findById( id );
 
     if ( !entryToUpdate ) {
+        await db.disconnect();
         return res.status(400).json({ message: 'No existe entrada con ese ID: ' + id });
     }
 
