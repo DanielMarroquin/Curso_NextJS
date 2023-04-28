@@ -19,11 +19,30 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
         case 'PUT':
             return updateEntry( req, res);
 
+        case 'GET':
+            return getListEntry( req, res);
+
         default: 
             return res.status(400).json({ message: 'Metodo no existe' });
 
     }
 
+}
+
+
+const getListEntry = async ( req: NextApiRequest, res: NextApiResponse ) => {
+    const { id } = req.query;
+    
+    await db.connect();
+
+    const entryList = await Entry.findById( id );
+    await db.disconnect();
+
+    if ( !entryList ) {
+        return res.status(400).json({ message: 'No existe entrada con ese ID: ' + id });
+    }
+
+    return res.status(200).json({ entryList })
 }
 
 const updateEntry = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
