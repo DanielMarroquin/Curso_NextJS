@@ -1,7 +1,26 @@
 import { Layout } from '@/components/layouts/Layouts'
+import { EntryStatus } from '@/interfaces';
 import SaveIcon from '@mui/icons-material/Save';
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, TextField } from '@mui/material'
-import React from 'react'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { 
+    capitalize, 
+    Button, 
+    Card, 
+    CardActions, 
+    CardContent, 
+    CardHeader, 
+    FormControl, 
+    FormControlLabel, 
+    FormLabel, 
+    Grid, 
+    Radio, 
+    RadioGroup, 
+    TextField, 
+    IconButton } from '@mui/material'
+
+
+
+const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished']
 
 export const EntryPage = () => {
   return (
@@ -16,7 +35,7 @@ export const EntryPage = () => {
                     <CardHeader
                         title='Entrada:'
                         subheader={ `Creada hace: .... minutos` }
-                    >
+                    />
                         <CardContent>
                             <TextField
                                 sx= {{ marginTop: 2, marginBottom:1 }}
@@ -26,7 +45,24 @@ export const EntryPage = () => {
                                 multiline
                                 label='Nueva Entrada'
                             />
-                            {/* RADIO */ }
+                            <FormControl>
+                                <FormLabel> Estado: </FormLabel>
+                                <RadioGroup
+                                    row
+                                >
+                                    {
+                                        validStatus.map( option => (
+                                            <FormControlLabel
+                                                key={ option }
+                                                value={ option }
+                                                control={ <Radio/> } 
+                                                label={ capitalize(option) }                                        
+                                            />
+                                        ) )
+                                    }
+                                </RadioGroup>
+                            </FormControl>
+
                         </CardContent>
 
                         <CardActions>
@@ -34,17 +70,27 @@ export const EntryPage = () => {
                                 startIcon={ <SaveIcon/> }
                                 variant='contained'
                                 fullWidth
+                                color='secondary'
                             >
-                                Save
+                                Guardar
                             </Button>
                         </CardActions>
-
-                    </CardHeader>
                 </Card>
 
             </Grid>
 
         </Grid>
+
+        <IconButton
+            sx = {{ 
+                position: 'fixed',
+                bottom: 30,
+                right: 30,
+                backgroundColor: 'red'
+             }}
+        >
+            <DeleteIcon/>
+        </IconButton>
     </Layout>
   )
 }
