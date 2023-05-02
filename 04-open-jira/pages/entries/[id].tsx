@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next'
 import { Layout } from '@/components/layouts/Layouts'
 import { EntryStatus } from '@/interfaces';
 import SaveIcon from '@mui/icons-material/Save';
@@ -17,13 +18,20 @@ import {
     RadioGroup, 
     TextField, 
     IconButton } from '@mui/material'
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useMemo, useState, FC } from 'react';
+import { isValidObjectId } from 'mongoose'
 
 
 
-const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished']
+const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
-export const EntryPage = () => {
+interface Props {
+    age: number
+}
+
+export const EntryPage:FC = ( props ) => {
+
+    console.log({ props })
 
     const [inputValue, setInputValue ] = useState('');
     const [ status, setStatus ] = useState<EntryStatus>('pending');
@@ -40,6 +48,8 @@ export const EntryPage = () => {
     const onSave = ( ) => {
         console.log(inputValue, status)
     }
+
+    const isNotValid = useMemo(() => inputValue.length >= 0 && touched, []);
 
 
   return (
@@ -65,6 +75,9 @@ export const EntryPage = () => {
                                 label='Nueva Entrada'
                                 value={ inputValue }
                                 onChange={ onInputValueChanged }
+                                onBlur={ () => setTouched ( true ) }
+                                helperText= { isNotValid && 'Ingrese un valor: ' }
+                                error={ isNotValid }
                             />
                             <FormControl>
                                 <FormLabel> Estado: </FormLabel>
@@ -95,14 +108,14 @@ export const EntryPage = () => {
                                 variant='contained'
                                 fullWidth
                                 color='secondary'
+                                onClick={ onSave }
+                                disabled = { inputValue.length <= 0  }
                             >
                                 Guardar
                             </Button>
                         </CardActions>
                 </Card>
-
             </Grid>
-
         </Grid>
 
         <IconButton
@@ -117,6 +130,33 @@ export const EntryPage = () => {
         </IconButton>
     </Layout>
   )
+}
+
+
+// Debe usar getServerSideProps cuando:
+// - Solo si necesita renderizar previamente una página cuyos datos deben obtenerse en el momento de la solicitud
+// Usar el SSR PROPS solo definir requests hechas por el usuario desde el servidor 
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+
+    const { id } = params as { id: string };
+
+    // Esta validacion me permite redireccionar al HomePage si el ID de Mongo es invalido 
+
+    if ( !isValidObjectId(id) ) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            id
+        }
+    }
 }
 
 export default EntryPage
