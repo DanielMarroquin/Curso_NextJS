@@ -18,9 +18,9 @@ import {
     RadioGroup, 
     TextField, 
     IconButton } from '@mui/material'
-import { ChangeEvent, useMemo, useState, FC } from 'react';
-import { isValidObjectId } from 'mongoose'
+import { ChangeEvent, useMemo, useState, FC, useContext } from 'react';
 import { dbEntries } from '@/database';
+import { EntriesContext } from '@/context/entries/EntriesContext';
 
 
 
@@ -31,6 +31,8 @@ interface Props {
 }
 
 export const EntryPage:FC<Props> = ({ entry }) => {
+
+    const { updateEntry } = useContext(EntriesContext);
 
     const [inputValue, setInputValue ] = useState(entry.description);
     const [ status, setStatus ] = useState<EntryStatus>(entry.status);
@@ -44,8 +46,15 @@ export const EntryPage:FC<Props> = ({ entry }) => {
         setStatus( event.target.value as EntryStatus);
     }
 
-    const onSave = ( ) => {
-        console.log(inputValue, status)
+    const onSave = () => {
+        if ( inputValue.trim().length === 0 ) return;
+
+        const updatedEntry: Entry = {
+            ...entry,
+            status,
+            description: inputValue
+        }
+        updateEntry( updatedEntry );
     }
 
     const isNotValid = useMemo(() => inputValue.length >= 0 && touched, []);
