@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { Layout } from '@/components/layouts/Layouts'
-import { EntryStatus } from '@/interfaces';
+import { Entry, EntryStatus } from '@/interfaces';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { 
@@ -20,21 +20,20 @@ import {
     IconButton } from '@mui/material'
 import { ChangeEvent, useMemo, useState, FC } from 'react';
 import { isValidObjectId } from 'mongoose'
+import { dbEntries } from '@/database';
 
 
 
 const validStatus: EntryStatus[] = ['pending', 'in-progress', 'finished'];
 
 interface Props {
-    age: number
+    entry: Entry
 }
 
-export const EntryPage:FC = ( props ) => {
+export const EntryPage:FC<Props> = ({ entry }) => {
 
-    console.log({ props })
-
-    const [inputValue, setInputValue ] = useState('');
-    const [ status, setStatus ] = useState<EntryStatus>('pending');
+    const [inputValue, setInputValue ] = useState(entry.description);
+    const [ status, setStatus ] = useState<EntryStatus>(entry.status);
     const [ touched, setTouched ] = useState(false);
 
     const onInputValueChanged = (event: ChangeEvent<HTMLInputElement> ) => {
@@ -53,7 +52,7 @@ export const EntryPage:FC = ( props ) => {
 
 
   return (
-    <Layout title='............' >
+    <Layout title={ inputValue.substring(0, 20) + '...' } >
         <Grid 
             container
             justifyContent='center'
@@ -62,8 +61,8 @@ export const EntryPage:FC = ( props ) => {
             <Grid item xs = { 12 } sm = { 8 } md = { 6 }>
                 <Card>
                     <CardHeader
-                        title= {`Entrada: ${ inputValue }`}
-                        subheader={ `Creada hace: .... minutos` }
+                        title= {`Entrada: `}
+                        subheader={ `Creada hace: ${ entry.createdAt }` }
                     />
                         <CardContent>
                             <TextField
@@ -141,9 +140,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const { id } = params as { id: string };
 
+    const entry = await dbEntries.getEntryById(id);
+
     // Esta validacion me permite redireccionar al HomePage si el ID de Mongo es invalido 
 
-    if ( !isValidObjectId(id) ) {
+    if ( !entry ) {
         return {
             redirect: {
                 destination: '/',
@@ -154,7 +155,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     return {
         props: {
-            id
+            entry: entry
         }
     }
 }
