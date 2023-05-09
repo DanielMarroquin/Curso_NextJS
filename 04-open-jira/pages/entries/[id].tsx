@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next'
-import { Layout } from '@/components/layouts/Layouts'
+import { Layout } from '../../components/layouts'
 import { Entry, EntryStatus } from '@/interfaces';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';

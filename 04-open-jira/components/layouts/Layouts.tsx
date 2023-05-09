@@ -13,7 +13,7 @@ export const Layout: FC<Props> = ({ title = 'Open - Jira', children }) => {
   return (
     <Box sx={{ flexFlow: 1 }}>
         <Head>
-            { title }
+            <title>{ title }</title> 
         </Head>
         <Navbar/>
         <Sidebar/>
